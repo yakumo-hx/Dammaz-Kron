@@ -1,0 +1,15 @@
+:root {
+  color-scheme: dark;
+  --bg: #191b16;
+  --text: #e6e0d1;
+  --gold: #baa06d;
+  --muted: #868777;
+  --line: #49493965;
+  --paper: #eee3c9;
+  --ink: #393121;
+  --sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+  --serif:
+    "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun",
+    Georgia, serif;
+}

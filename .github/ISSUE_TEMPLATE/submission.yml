@@ -1,0 +1,20 @@
+name: 添一笔仇
+description: 投稿一条矮人笑话或一张梗图
+title: '[投稿] '
+body:
+  - type: textarea
+    id: content
+    attributes:
+      label: 笑话或图片
+      description: 可以写文字，也可以把图片拖到这里。日期如果是笑话的一部分，请直接写在正文中。
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: 原帖链接
+  - type: input
+    id: tags
+    attributes:
+      label: 标签建议
+      description: 标签用于辅助识别和筛选。

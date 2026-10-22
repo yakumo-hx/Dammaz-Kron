@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Mark from '../components/Mark.astro';
+import Dwarf from '../components/Dwarf.astro';
+import { entries, tags, base, repoUrl, entryUrl } from '../lib/entries';
+const first = entries[0];
+---
+<Layout>
+  <main id="main">
+    <section class="hero shell" id="book" aria-labelledby="hero-title">
+      <div class="hero-intro">
+        <p class="eyebrow"><span></span> THE GREAT BOOK OF GRUDGES</p>
+        <h1 id="hero-title">仇恨<span>之书</span><i aria-hidden="true">.</i></h1>
+        <p class="hero-description">有些笑话，<br/>矮人会记一辈子。</p>
+        <div class="hero-actions"><a href="#collection" class="text-link">翻阅所有记录 <span>↓</span></a></div>
+        <div class="archive-stat"><span>{String(entries.length).padStart(3, '0')}</span><div>笔仇恨已入册<br/><small>一笔也不会少。</small></div></div>
+        <p class="margin-note">内容可能很短。记性不会。</p>
+      </div>
+      <div class="book-scene">
+        <div class="book-topnote"><span>随机翻开一页</span><span class="edition">VOL. 01 / 起因</span></div>
+        <div class="book-cover">
+          <div class="book-spine" aria-hidden="true"><span>ᛞ</span><span>ᚲ</span><span>ᚱ</span></div>
+          <article class="book-page" id="book-page" aria-label="正在翻阅的笑话">
+            <div class="page-meta"><span>仇恨记录 · <b id="active-id">{first.id}</b></span><Mark size={30}/></div>
+            <div class="book-entry" id="book-entry">
+              <span class="small-label">这一笔，记下了。</span>
+              <h2 id="active-question">{first.question}</h2>
+              <p id="active-answer">{first.answer}</p>
+              <div id="active-images"></div>
+            </div>
+            <div class="page-bottom"><div class="paper-tags" id="active-tags">{first.tags.map(tag => <span>{tag}</span>)}</div><a id="active-permalink" href={entryUrl(first.id)} aria-label={`打开记录 ${first.id} 的独立页面`}>↗</a></div>
+            <div class="page-rule" aria-hidden="true"><span>◆</span></div>
+          </article>
+          <span class="book-ribbon" aria-hidden="true"></span>
+        </div>
+        <div class="book-controls">
+          <button id="previous" class="icon-button" aria-label="上一条笑话">←</button>
+          <button id="shuffle" class="shuffle-button"><span aria-hidden="true">⤨</span> 随手翻一页</button>
+          <button id="next" class="icon-button" aria-label="下一条笑话">→</button>
+          <span class="control-separator"></span>
+          <button id="autoplay" class="autoplay-button" aria-pressed="false"><span id="play-symbol" aria-hidden="true">▷</span><span id="play-label">自动翻页</span></button>
+          <span id="countdown" class="countdown" aria-hidden="true">30s</span>
+        </div>
+        <p class="book-footnote">文字慢慢读，旧账慢慢翻。</p>
+      </div>
+    </section>
+
+    <section class="collection shell" id="collection" aria-labelledby="collection-title">
+      <div class="section-heading"><div><p class="eyebrow">THE ARCHIVE</p><h2 id="collection-title">每一笔，都在这里<span>.</span></h2></div><span class="section-count">共 {entries.length} 条记录</span></div>
+      <div class="collection-tools">
+        <div class="filters" role="group" aria-label="按标签筛选"><button class="filter active" data-tag="all" aria-pressed="true">全部 <span>{entries.length}</span></button>{tags.map(tag => <button class="filter" data-tag={tag} aria-pressed="false">{tag}</button>)}</div>
+        <label class="search-field"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 5 5"/></svg><input id="search" type="search" placeholder="找一笔旧账…" aria-label="搜索编号、正文或标签"/></label>
+      </div>
+      <div class="entry-grid" id="entry-grid">
+        {entries.map(entry => <article class="entry-card" data-entry-id={entry.id} data-search={`${entry.id} ${entry.question} ${entry.answer} ${entry.tags.join(' ')}`} data-tags={JSON.stringify(entry.tags)}>
+          <div class="card-meta"><span>NO. {entry.id}</span><span>文字记录</span></div>
+          <h3><a href={entryUrl(entry.id)}>{entry.question}</a></h3>
+          <p>{entry.answer}</p>
+          {entry.images.map(image => <img src={`${base}${image.src}`} alt={image.alt} loading="lazy"/>)}
+          <div class="card-bottom"><div class="card-tags">{entry.tags.map(tag => <span>#{tag}</span>)}</div><button class="open-entry" data-id={entry.id} aria-label={`在书中查看记录 ${entry.id}`}>↗</button></div>
+        </article>)}
+      </div>
+      <p class="empty-message" id="empty-message" hidden>这笔账还没记过。换个词找找，或者添上一笔。</p>
+      <p class="filter-status sr-only" id="filter-status" role="status"></p>
+      <div class="archive-end"><span></span><p>暂时就这些。仇恨还在积累。</p><span></span></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="shell footer-inner"><a class="footer-brand" href="#book"><Mark size={26}/> DAMMAZ KRON</a><p>矮人笑话收集站 · 始于 2026</p><a href={repoUrl} target="_blank" rel="noopener noreferrer">查看书的背面 ↗</a></div><div class="footer-edge" aria-hidden="true"></div></footer>
+  <section class="under-footer" aria-label="页脚下面的矮人彩蛋"><div class="under-footer-inner"><div class="secret-caption"><span class="eyebrow">你还在往下翻？</span><p id="dwarf-speech" role="status">嘘——还有几个没够到页脚的。</p></div><div class="dwarf-group"><button class="dwarf dwarf-one" data-speech="是谁把页脚挂这么高的？记下来！" aria-label="和左边的矮人说话"><Dwarf color="#856a45" name="踮着脚的矮人"/></button><button class="dwarf dwarf-two" data-speech="我不是矮，我只是还没加载完。" aria-label="和中间的矮人说话"><Dwarf color="#6f7770" name="戴铁盔的矮人"/></button><button class="dwarf dwarf-three" data-speech="网站有底线。我们在底线下面。" aria-label="和右边的矮人说话"><Dwarf color="#844a3b" name="红衣矮人"/></button></div></div></section>
+
+  <button class="submit-fab" id="open-submission"><span aria-hidden="true">＋</span> 添一笔仇</button>
+  <dialog class="submission-dialog" id="submission-dialog" aria-labelledby="submission-title"><div class="drawer-top"><span class="eyebrow">ADD A GRUDGE</span><button id="close-submission" class="icon-button" aria-label="关闭投稿">×</button></div><h2 id="submission-title">这笔账，你来记。</h2><p class="drawer-description">一个笑话，一张梗图。<br/>值得记住的，都可以写下来。</p><form id="submission-form"><label for="submission-text">笑话正文<textarea id="submission-text" name="text" rows="6" maxlength="4000" placeholder="听说，有个矮人……"></textarea></label><label for="submission-source">原帖链接 <span>选填</span><input type="url" id="submission-source" name="source" placeholder="https://"/></label><label for="submission-tags">标签建议 <span>选填</span><input id="submission-tags" name="tags" maxlength="80" placeholder="例如：身高、麦酒、记仇"/></label><p class="submission-note">通过 GitHub Issue 投稿，需要登录 GitHub。图片可在下一页拖入；投稿内容公开，收录后获得正式编号。</p><p id="submission-error" class="form-error" role="alert"></p><button class="submit-button" type="submit">前往 GitHub 提交 <span>↗</span></button><button class="draft-button" type="button" id="copy-draft">复制投稿文字</button></form></dialog>
+  <script id="entries-data" type="application/json" set:html={JSON.stringify(entries).replace(/</g, '\\u003c')} />
+  <script>import '../scripts/main';</script>
+</Layout>

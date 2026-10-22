@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Mark from '../../components/Mark.astro';
+import { entries, base, entryUrl } from '../../lib/entries';
+export function getStaticPaths() { return entries.map(entry => ({ params: { id: entry.id }, props: { entry } })); }
+const { entry } = Astro.props;
+const index = entries.findIndex(item => item.id === entry.id);
+const previous = entries[index - 1];
+const next = entries[index + 1];
+---
+<Layout title={`${entry.id} · ${entry.question} | Dammaz Kron`} description={`${entry.question}${entry.answer}`}>
+  <main class="detail-main shell" id="main">
+    <a class="back-link" href={`${base}/#collection`}>← 回到所有记录</a>
+    <article class="detail-page book-page"><div class="page-meta"><span>仇恨记录 · {entry.id}</span><Mark size={34}/></div><h1>{entry.question}</h1><p class="detail-answer">{entry.answer}</p>{entry.images.map(image => <img class="detail-image" src={`${base}${image.src}`} alt={image.alt}/>)}<div class="paper-tags">{entry.tags.map(tag => <span>{tag}</span>)}</div><div class="page-rule" aria-hidden="true"><span>◆</span></div></article>
+    <nav class="detail-navigation" aria-label="相邻记录">{previous ? <a href={entryUrl(previous.id)}>← {previous.id} 上一笔</a> : <span></span>}{next ? <a href={entryUrl(next.id)}>{next.id} 下一笔 →</a> : <span></span>}</nav>
+    <p class="detail-signoff">DAMMAZ KRON · 每一笔，都记着。</p>
+  </main>
+</Layout>

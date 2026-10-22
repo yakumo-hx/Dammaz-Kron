@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+import Mark from '../components/Mark.astro';
+import { base, repoUrl } from '../lib/entries';
+const { title = 'Dammaz Kron · 仇恨之书', description = '一本认真收录矮人笑话的仇恨之书。文字、梗图，以及每一笔值得记住的旧账。' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#171714" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href={`${base}/`} aria-label="Dammaz Kron 首页">
+          <Mark size={38}/>
+          <span><strong>DAMMAZ KRON</strong><small>仇恨之书</small></span>
+        </a>
+        <nav aria-label="主导航">
+          <a href={`${base}/#book`}>翻开此书</a>
+          <a href={`${base}/#collection`}>所有记录</a>
+          <a class="github-link" href={repoUrl} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+    </header>
+    <slot />
+    <div class="toast" role="status" id="toast"></div>
+  </body>
+</html>
